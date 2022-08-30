@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% use  %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-2" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="container mt-4">
+        <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span> </h2>
+    </div>
+    <div class="container mt-4 w-50">
+        <h1 class="text-center text-primary mt-4">Ajouter une page</h1>
+        {# render the form and change the submission method #}
+        {{ form_start(form) }}
+         {{ form_widget(form) }}
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

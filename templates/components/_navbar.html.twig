@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_dashboard') }}">Carnet de Montagne</a>
+                </li>
+                {%else %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Carnet de Montagne</a>
+                </li>
+                {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profil</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ path('app_user_edit',{id:app.user.id}) }}">Modifer mon profil</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_user_edit_password',{id:app.user.id}) }}">Modifer mon mot de passe</a></li>
+                    </ul>
+                </li>
+                    {%else %}
+                <li class="nav-item">
+                        <a class="nav-link" href="#">Utilisateurs</a>
+                </li>
+                    {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sortie
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Grandes-Voies</a></li>
+                        <li><a class="dropdown-item" href="#">Grandes-Voies Trad</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Alpinisme-rocheux</a></li>
+                        <li><a class="dropdown-item" href="#">Alpinisme-mixte</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Randonnée</a></li>
+                        <li><a class="dropdown-item" href="#">Randonnée-Alpine</a></li>
+                    </ul>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Deconnection</a>
+                    </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_auth') }}">Connection</a>
+                </li>{% endif %}
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
