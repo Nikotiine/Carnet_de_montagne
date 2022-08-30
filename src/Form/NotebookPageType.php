@@ -7,13 +7,16 @@ use App\Entity\Difficulty;
 use App\Entity\Felling;
 use App\Entity\MountainLocation;
 use App\Entity\NotebookPage;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,6 +35,7 @@ class NotebookPageType extends AbstractType
                 "label_attr" => [
                     "class" => "form-label mt-3",
                 ],
+                "constraints" => [new Assert\NotBlank()],
             ])
             ->add("routName", TextType::class, [
                 "attr" => [
@@ -41,6 +45,7 @@ class NotebookPageType extends AbstractType
                 "label_attr" => [
                     "class" => "form-label mt-3",
                 ],
+                "constraints" => [new Assert\NotBlank()],
             ])
             ->add("moutainLocation", EntityType::class, [
                 "class" => MountainLocation::class,
@@ -70,6 +75,7 @@ class NotebookPageType extends AbstractType
                 "choice_label" => "name",
                 "multiple" => false,
                 "expanded" => false,
+                "constraints" => [new Assert\NotNull()],
             ])
             ->add("heightDifference", IntegerType::class, [
                 "attr" => [
@@ -81,23 +87,22 @@ class NotebookPageType extends AbstractType
                 "label_attr" => [
                     "class" => "form-label mt-3",
                 ],
-                "constraints" => [
-                    new Assert\NotBlank(),
-                    new Assert\Range(min: 1, max: 99999),
-                ],
+                "constraints" => [new Assert\Range(min: 1, max: 99999)],
             ])
             ->add("achieveAt", DateType::class, [
                 "attr" => [
-                    "class" => "form-control",
+                    "class" => "form-control mt-2",
                 ],
+                "input" => "datetime_immutable",
                 "label" => "Quel Jour ?",
                 "label_attr" => [
                     "class" => "form-label mt-3",
                 ],
+                "html5" => false,
             ])
-            ->add("totalTime", IntegerType::class, [
+            ->add("totalTime", TimeType::class, [
                 "attr" => [
-                    "class" => "form-control",
+                    "class" => "form-control mt-2",
                 ],
                 "label" => "Temps de course",
                 "label_attr" => [
@@ -112,6 +117,7 @@ class NotebookPageType extends AbstractType
                 "label_attr" => [
                     "class" => "form-label mt-3",
                 ],
+                "constraints" => [new Assert\NotNull()],
             ])
             ->add("pointToReview", TextareaType::class, [
                 "attr" => [
@@ -135,6 +141,7 @@ class NotebookPageType extends AbstractType
                 "choice_label" => "name",
                 "multiple" => false,
                 "expanded" => false,
+                "constraints" => [new Assert\NotNull()],
             ])
             ->add("feeling", EntityType::class, [
                 "class" => Felling::class,
@@ -154,7 +161,7 @@ class NotebookPageType extends AbstractType
                 "attr" => [
                     "class" => "btn btn-primary mt-4",
                 ],
-                "label" => "Modifier",
+                "label" => "Ajouter",
             ]);
     }
 

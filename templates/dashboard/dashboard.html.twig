@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% use  %}
+
 
 {% block title %}Dashboard{% endblock %}
 
@@ -16,7 +16,20 @@
         <h1 class="text-center text-primary mt-4">Ajouter une page</h1>
         {# render the form and change the submission method #}
         {{ form_start(form) }}
-         {{ form_widget(form) }}
+        <div class="row">
+            <div class="col-12">{{ field_label(form.title) }}{{ form_widget(form.title) }}</div>
+            <div class="col_12 mt-3">{{ field_label(form.routName) }}{{ form_widget(form.routName) }}</div>
+            <div class="col-6 mt-3"> {{ field_label(form.difficulty) }}{{ form_widget(form.difficulty) }}</div>
+            <div class="col-6 mt-3"> {{ field_label(form.heightDifference) }}{{ form_widget(form.heightDifference) }}</div>
+            <div class="col-12 mt-3">{{ field_label(form.moutainLocation) }}{{ form_widget(form.moutainLocation) }}</div>
+            <div class="col-6 mt-3">{{ field_label(form.totalTime) }}{{ form_widget(form.totalTime) }}</div>
+            <div class="col-6 mt-3">{{ field_label(form.achieveAt) }}{{ form_widget(form.achieveAt) }}</div>
+            <div class="col-12 mt-3">{{ field_label(form.story) }}{{ form_widget(form.story) }}</div>
+            <div class="col-12 mt-3">{{ field_label(form.pointToReview) }}{{ form_widget(form.pointToReview) }}</div>
+            <div class="col-6 mt-3">{{ field_label(form.conditionMeteot) }}{{ form_widget(form.conditionMeteot) }}</div>
+            <div class="col-6 mt-3">{{ field_label(form.feeling) }}{{ form_widget(form.feeling) }}</div>
+        </div>
+
 
         {{ form_end(form) }}
     </div>
