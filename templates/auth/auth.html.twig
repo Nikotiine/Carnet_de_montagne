@@ -5,14 +5,13 @@
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mt-2" role="alert">
-      ${{ message }}
+            {{ message }}
         </div>
     {% endfor %}
     {% if error %}
         <div class="alert alert-danger mt-2" role="alert">
             {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
-
     {% endif %}
 
     <div class="container">
@@ -20,20 +19,17 @@
         <p class="text-center mt-5 ">
             <a class="text-info" href="{{ path('app_register') }}">pas encore de compte ?</a>
         </p>
-
     </div>
     <div class="container position-absolute top-50 start-50 translate-middle w-25 p-3 border border-primary rounded">
     <form method="post" class="" action="{{ path('app_auth') }}">
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
             <input type="email" class="form-control" id="email" name="_username" value="{{ last_username }}">
-
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="_password">
         </div>
-
         <button type="submit" class="btn btn-primary">Se connecter</button>
     </form>
     </div>

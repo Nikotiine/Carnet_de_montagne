@@ -9,29 +9,23 @@
             {{ message }}
         </div>
     {% endfor %}
-    <div class="container mt-4">
+    <div class="container mt-4 ">
         <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span> </h2>
+
     </div>
-    <div class="container mt-4 w-50">
-        <h1 class="text-center text-primary mt-4">Ajouter une page</h1>
-        {# render the form and change the submission method #}
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="col-12">{{ field_label(form.title) }}{{ form_widget(form.title) }}</div>
-            <div class="col_12 mt-3">{{ field_label(form.routName) }}{{ form_widget(form.routName) }}</div>
-            <div class="col-6 mt-3"> {{ field_label(form.difficulty) }}{{ form_widget(form.difficulty) }}</div>
-            <div class="col-6 mt-3"> {{ field_label(form.heightDifference) }}{{ form_widget(form.heightDifference) }}</div>
-            <div class="col-12 mt-3">{{ field_label(form.moutainLocation) }}{{ form_widget(form.moutainLocation) }}</div>
-            <div class="col-6 mt-3">{{ field_label(form.totalTime) }}{{ form_widget(form.totalTime) }}</div>
-            <div class="col-6 mt-3">{{ field_label(form.achieveAt) }}{{ form_widget(form.achieveAt) }}</div>
-            <div class="col-12 mt-3">{{ field_label(form.story) }}{{ form_widget(form.story) }}</div>
-            <div class="col-12 mt-3">{{ field_label(form.pointToReview) }}{{ form_widget(form.pointToReview) }}</div>
-            <div class="col-6 mt-3">{{ field_label(form.conditionMeteot) }}{{ form_widget(form.conditionMeteot) }}</div>
-            <div class="col-6 mt-3">{{ field_label(form.feeling) }}{{ form_widget(form.feeling) }}</div>
-        </div>
+
+    {% for page in notebook %}
+
+    {% include 'notebook/one_page.html.twig' with {'page':page} %} {% endfor %}
+
+       <div class="navigation d-flex justify-content-center">
+           {{ knp_pagination_render(notebook) }}
+
+       </div>
+    <div class="container d-flex justify-content-center mt-5">
+        <a class="btn btn-primary w-25" href="{{ path('app_notebook_new') }}" role="button">Nouvelle note</a>
+    </div>
 
 
-        {{ form_end(form) }}
-    </div>
 
 {% endblock %}

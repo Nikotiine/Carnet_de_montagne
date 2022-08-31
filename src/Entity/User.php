@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-#[UniqueEntity("email")]
+
+#[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners(["App\EntityListener\UserListener"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -68,9 +71,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plainPassword = null;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: NotebookPage::class, orphanRemoval: true)]
+    private Collection $notebookPages;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->notebookPages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = "ROLE_USER";
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -245,19 +252,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param string|null $plainPassword
-     */
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return Collection<int, NotebookPage>
+     */
+    public function getNotebookPages(): Collection
+    {
+        return $this->notebookPages;
+    }
+
+    public function addNotebookPage(NotebookPage $notebookPage): self
+    {
+        if (!$this->notebookPages->contains($notebookPage)) {
+            $this->notebookPages->add($notebookPage);
+            $notebookPage->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotebookPage(NotebookPage $notebookPage): self
+    {
+        if ($this->notebookPages->removeElement($notebookPage)) {
+            // set the owning side to null (unless already changed)
+            if ($notebookPage->getAuthor() === $this) {
+                $notebookPage->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 }

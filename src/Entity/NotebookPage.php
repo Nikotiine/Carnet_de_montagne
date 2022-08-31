@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Repository\NotebookPageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
+#[UniqueEntity('title')]
 #[ORM\Entity(repositoryClass: NotebookPageRepository::class)]
 class NotebookPage
 {
@@ -42,6 +45,7 @@ class NotebookPage
     private ?string $story = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive]
     private ?int $heightDifference = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
@@ -50,19 +54,23 @@ class NotebookPage
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $pointToReview = null;
 
-    #[ORM\ManyToOne(inversedBy: "notebookPages")]
+    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Difficulty $difficulty = null;
 
     #[ORM\ManyToOne]
     private ?ConditionMeteo $conditionMeteot = null;
 
-    #[ORM\ManyToOne(inversedBy: "notebookPages")]
+    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MountainLocation $moutainLocation = null;
 
     #[ORM\ManyToOne]
     private ?Felling $feeling = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
 
     /**
      * @param \DateTimeImmutable|null $createdAt
@@ -229,6 +237,18 @@ class NotebookPage
     public function setFeeling(?Felling $feeling): self
     {
         $this->feeling = $feeling;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

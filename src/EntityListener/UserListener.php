@@ -18,20 +18,18 @@ class UserListener
     {
         $this->encodePassword($user);
     }
+
     public function preUpdate(User $user): void
     {
         $this->encodePassword($user);
-
     }
 
     /**
-     * Encode password on plain password
-     * @param User $user
-     * @return void
+     * Encode password on plain password.
      */
     public function encodePassword(User $user): void
     {
-        if ($user->getPlainPassword() === null) {
+        if (null === $user->getPlainPassword()) {
             return;
         }
         $user->setPassword(
