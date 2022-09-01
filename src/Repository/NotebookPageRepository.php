@@ -39,28 +39,26 @@ class NotebookPageRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return NotebookPage[] Returns an array of NotebookPage objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne les dernieres notes ajouter en publique et par filter par date de publication
+     * @return NotebookPage[] Returns an array of NotebookPage objects
+     */
+    public function findByLastPublicNote(): array
+    {
+        return $this->createQueryBuilder("n")
+            ->andWhere("n.isPublic = 1")
+            ->orderBy("n.achieveAt", "DESC")
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?NotebookPage
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?NotebookPage
+    //    {
+    //        return $this->createQueryBuilder('n')
+    //            ->andWhere('n.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

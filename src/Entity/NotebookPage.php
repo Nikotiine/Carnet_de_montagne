@@ -72,6 +72,13 @@ class NotebookPage
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    #[ORM\Column]
+    private ?bool $isPublic = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MainCategory $category = null;
+
     /**
      * @param \DateTimeImmutable|null $createdAt
      */
@@ -249,6 +256,30 @@ class NotebookPage
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function isIsPublic(): ?bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): self
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    public function getCategory(): ?MainCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?MainCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -21,11 +21,17 @@ class MountainLocation
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'moutainLocation', targetEntity: NotebookPage::class)]
+    #[
+        ORM\OneToMany(
+            mappedBy: "moutainLocation",
+            targetEntity: NotebookPage::class
+        )
+    ]
     private Collection $notebookPages;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->notebookPages = new ArrayCollection();
     }
 
