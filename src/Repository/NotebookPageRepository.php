@@ -40,14 +40,15 @@ class NotebookPageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les dernieres notes ajouter en publique et par filter par date de publication
+     * Retourne les dernieres notes ajouter en publique et par filter par date de publication.
+     *
      * @return NotebookPage[] Returns an array of NotebookPage objects
      */
     public function findByLastPublicNote(): array
     {
-        return $this->createQueryBuilder("n")
-            ->andWhere("n.isPublic = 1")
-            ->orderBy("n.achieveAt", "DESC")
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.isPublic = 1')
+            ->orderBy('n.achieveAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

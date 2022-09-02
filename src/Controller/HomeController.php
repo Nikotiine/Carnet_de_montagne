@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route("/", name: "app_home")]
+    #[Route('/', name: 'app_home')]
     public function index(
         NotebookPageRepository $repository,
         Request $request,
@@ -19,12 +19,12 @@ class HomeController extends AbstractController
     ): Response {
         $notebook = $paginator->paginate(
             $repository->findByLastPublicNote(),
-            $request->query->getInt("page", 1),
+            $request->query->getInt('page', 1),
             2
         );
 
-        return $this->render("home/index.html.twig", [
-            "notebook" => $notebook,
+        return $this->render('home/index.html.twig', [
+            'notebook' => $notebook,
         ]);
     }
 }

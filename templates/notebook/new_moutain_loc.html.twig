@@ -1,8 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle Note{% endblock %}
+{% block title %}Nouveau massif{% endblock %}
 
 {% block body %}
-   <div class="container mt-5 w-50"> {{ form(form) }}</div>
+
+   <div class="container mt-5 w-50">
+      {{ form_start(form) }}
+      <div class="col-12"> {{ form_label(form.name) }} {{ form_widget(form.name) }}</div>
+      <div class="col-12 d-flex justify-content-end">
+         <a class="btn bg-secondary mt-4 me-2" href="{{ path('app_notebook_new') }}">Annuler</a>
+         {{ form_label(form.submit) }}{{ form_widget(form.submit) }}
+      </div>
+
+      {{ form_end(form) }}
+   </div>
 
 {% endblock %}

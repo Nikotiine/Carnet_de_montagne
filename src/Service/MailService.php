@@ -11,8 +11,7 @@ class MailService
     private MailerInterface $mailer;
 
     /**
-     * Constructeur
-     * @param MailerInterface $mailer
+     * Constructeur.
      */
     public function __construct(MailerInterface $mailer)
     {
@@ -21,6 +20,7 @@ class MailService
 
     /**
      * Service d'envoie de mail a partir de la MailerInterface.
+     *
      * @throws TransportExceptionInterface
      */
     public function sendEmail(
@@ -30,9 +30,9 @@ class MailService
     ): void {
         $email = (new TemplatedEmail())
             ->from($from)
-            ->to("nikotiine.dev@gmail.com")
+            ->to('nikotiine.dev@gmail.com')
             ->subject($subject)
-            ->htmlTemplate("utils/email.html.twig")
+            ->htmlTemplate('utils/email.html.twig')
             ->context($context);
         $this->mailer->send($email);
     }

@@ -6,7 +6,9 @@ use App\Repository\MountainLocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+#[UniqueEntity("name")]
 #[ORM\Entity(repositoryClass: MountainLocationRepository::class)]
 class MountainLocation
 {
@@ -16,6 +18,8 @@ class MountainLocation
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\Length(min: 2, max: 150)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column]

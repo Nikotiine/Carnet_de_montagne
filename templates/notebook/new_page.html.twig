@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle Note{% endblock %}
+{% block title %}{{ title }} de note{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-2" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="container mt-4 w-50">
-        <h1 class="text-center text-primary mt-4">Ajouter une note</h1>
+        <h1 class="text-center text-primary mt-4">{{ title }} une note</h1>
         {# render the form and change the submission method #}
         {{ form_start(form) }}
         <div class="row">
@@ -13,9 +18,13 @@
             <div class="col-6 mt-3"> {{ field_label(form.difficulty) }}{{ form_widget(form.difficulty) }}</div>
             <div class="col-6 mt-3"> {{ field_label(form.heightDifference) }}{{ form_widget(form.heightDifference) }}</div>
             <div class="col-6 mt-3"> {{ field_label(form.category) }}{{ form_widget(form.category) }}</div>
-            <div class="col-6 mt-3">{{ field_label(form.moutainLocation) }}{{ form_widget(form.moutainLocation) }} <span class="text-primary"><small>
-                         <a class="text-info m-lg-2" href="{{ path('app_notebook_new_mountain_location') }}">Pas dans la liste ?</a></small> </span></div>
-
+            <div class="col-6 mt-3">{{ field_label(form.moutainLocation) }}{{ form_widget(form.moutainLocation) }}
+                <span class="text-primary">
+                    <small>
+                        <a class="text-info m-lg-2" href="{{ path('app_notebook_new_mountain_location') }}">Pas dans la liste ?</a>
+                    </small>
+                </span>
+            </div>
             <div class="col-6 mt-3">{{ field_label(form.totalTime) }}{{ form_widget(form.totalTime) }}</div>
             <div class="col-6 mt-3">{{ field_label(form.achieveAt) }}{{ form_widget(form.achieveAt) }}</div>
             <div class="col-12 mt-3">{{ field_label(form.story) }}{{ form_widget(form.story) }}</div>
@@ -23,7 +32,7 @@
             <div class="col-6 mt-3">{{ field_label(form.conditionMeteot) }}{{ form_widget(form.conditionMeteot) }}</div>
             <div class="col-6 mt-3">{{ field_label(form.feeling) }}{{ form_widget(form.feeling) }}</div>
             <div class="col-12 mt-5 d-flex justify-content-center">{{ field_label(form.isPublic) }}{{ form_widget(form.isPublic) }}</div>
-            <div class="col-12 mt-5 d-flex justify-content-end">{{ form_widget(form.submit) }}</div>
+            <div class="col-12 mt-5 d-flex justify-content-end"><button type="submit" class="btn btn-primary">{{ title }}</button></div>
         </div>
 
 

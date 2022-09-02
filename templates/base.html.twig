@@ -15,15 +15,22 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
+
     <body>
     {% block header %}
+        {# Nav-Bar #}
         {% include('components/_navbar.html.twig') %}
     {% endblock %}
-        {% block body %}
-        {% endblock %}
-    {% block footer %}
-    {% include('components/_footer.html.twig') %}
+
+    {% block body %}
+        {# Contenu des autres pages heritant de base.html.twig #}
     {% endblock %}
+
+    {% block footer %}
+        {# footer #}
+        {% include('components/_footer.html.twig') %}
+    {% endblock %}
+
     </body>
 
 </html>

@@ -1,24 +1,29 @@
 
 {% block body%}
 <div class="card mb-3 mx-auto w-50 mt-5 border border-primary rounded" >
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-danger" href="{{ path('app_notebook_edit_page',{id:page.id}) }}">Modifier</a>
+        </div>
+    {% endif %}
     <div class="row g-0">
         <div class="col-md-4 py-5">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Difficulté :{{ page.difficulty.name }}</li>
-                <li class="list-group-item">Meteo :{{ page.conditionMeteot.name }}</li>
-                <li class="list-group-item">Denivele :{{ page.heightDifference }} metres D+</li>
-                <li class="list-group-item">Temps passé :{{ page.totalTime|date('H:i') }}</li>
-                <li class="list-group-item">Sentiment :{{ page.feeling.name }}</li>
+                <li class="list-group-item">Difficulté: {{ page.difficulty.name }}</li>
+                <li class="list-group-item">Meteo: {{ page.conditionMeteot.name }}</li>
+                <li class="list-group-item">Denivele: {{ page.heightDifference }} metres D+</li>
+                <li class="list-group-item">Temps passé: {{ page.totalTime|date('H:i') }}</li>
+                <li class="list-group-item">Sentiment: {{ page.feeling.name }}</li>
             </ul>
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <blockquote class="blockquote mb-0 ">
+                <h4 class="card-title mt-3 text-info">{{ page.category.name }}</h4>
+                <blockquote class="blockquote mb-0 mt-4">
                     <footer class="blockquote-footer">Massif montagneux <cite title="{{ page.moutainLocation.name}}">{{ page.moutainLocation.name}} </cite></footer>
                 </blockquote>
-                <h5 class="card-title mt-3">{{ page.title }}</h5>
+                <h5 class="card-title mt-3">Titre :{{ page.title }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Course :{{ page.routName }}</h6>
-
                 <p class="card-text">{{ page.story }}</p>
                 <p class="card-text">{{ page.pointToReview }}</p>
                 <p class="card-text"><small class="text-muted">Fait le  {{ page.achieveAt|date("m/d/Y") }}</small></p>
