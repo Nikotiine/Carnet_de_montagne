@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos sortie{% endblock %}
+
+{% block body %}
+    <div class="row m-2">
+        {% for page in notebooks %}
+            <div class="col-6">
+                {% include 'notebook/one_page.html.twig' with {'page':page} %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="navigation d-flex justify-content-center">
+        {{ knp_pagination_render(notebooks) }}
+    </div>
+{% endblock %}

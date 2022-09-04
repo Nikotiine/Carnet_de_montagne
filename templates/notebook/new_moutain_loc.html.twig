@@ -8,7 +8,7 @@
       {{ form_start(form) }}
       <div class="col-12"> {{ form_label(form.name) }} {{ form_widget(form.name) }}</div>
       <div class="col-12 d-flex justify-content-end">
-         <a class="btn bg-secondary mt-4 me-2" href="{{ path('app_notebook_new') }}">Annuler</a>
+         <a class="btn bg-secondary mt-4 me-2" href="javascript:history.go(-1)">Annuler</a>
          {{ form_label(form.submit) }}{{ form_widget(form.submit) }}
       </div>
 

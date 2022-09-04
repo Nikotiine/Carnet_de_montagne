@@ -10,7 +10,6 @@
     {% endfor %}
     <div class="container mt-4 w-50">
         <h1 class="text-center text-primary mt-4">{{ title }} une note</h1>
-        {# render the form and change the submission method #}
         {{ form_start(form) }}
         <div class="row">
             <div class="col-12">{{ field_label(form.title) }}{{ form_widget(form.title) }}</div>
@@ -32,7 +31,10 @@
             <div class="col-6 mt-3">{{ field_label(form.conditionMeteot) }}{{ form_widget(form.conditionMeteot) }}</div>
             <div class="col-6 mt-3">{{ field_label(form.feeling) }}{{ form_widget(form.feeling) }}</div>
             <div class="col-12 mt-5 d-flex justify-content-center">{{ field_label(form.isPublic) }}{{ form_widget(form.isPublic) }}</div>
-            <div class="col-12 mt-5 d-flex justify-content-end"><button type="submit" class="btn btn-primary">{{ title }}</button></div>
+            <div class="col-12 mt-5 d-flex justify-content-end">
+                <a class="btn bg-secondary me-2" href="javascript:history.go(-1)">Annuler</a>
+                <button type="submit" class="btn btn-primary">{{ title }}</button>
+            </div>
         </div>
 
 

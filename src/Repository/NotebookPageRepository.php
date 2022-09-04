@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\NotebookPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -44,11 +45,41 @@ class NotebookPageRepository extends ServiceEntityRepository
      *
      * @return NotebookPage[] Returns an array of NotebookPage objects
      */
-    public function findByLastPublicNote(): array
+    public function findByPublicNote(string $orderBy): array
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.isPublic = 1')
-            ->orderBy('n.achieveAt', 'DESC')
+        return $this->createQueryBuilder("n")
+            ->andWhere("n.isPublic = 1")
+            ->orderBy("n.achieveAt", $orderBy)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retrourne un array de note filtrer par categorie et par ordre de publication
+     * @param int $cat
+     * @param string $orderBy
+     * @return array|null
+     */
+    public function findPublicWithParameters(int $cat, string $orderBy): ?array
+    {
+        return $this->createQueryBuilder("n")
+            ->andWhere("n.isPublic = 1")
+            ->andWhere("n.category = :cat")
+            ->setParameter("cat", $cat)
+            ->orderBy("n.achieveAt", $orderBy)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * retourne la derniere note creer par l'utilisateur
+     * @return array|null
+     */
+    public function findLastEntry(): ?array
+    {
+        return $this->createQueryBuilder("n")
+            ->orderBy("n.createdAt", "DESC")
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
     }

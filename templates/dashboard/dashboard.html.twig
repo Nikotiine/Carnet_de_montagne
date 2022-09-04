@@ -3,7 +3,7 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block body %}
+{% block body%}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mt-2" role="alert">
             {{ message }}
@@ -11,21 +11,27 @@
     {% endfor %}
 
     <div class="container mt-4 ">
-        <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span> </h2>
+        <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span></h2>
     </div>
-    {% if notebook is empty %}
-    <p>Vous n'avez pas encore ouvert de carnet</p>
-    {% endif %}
-
-    {% for page in notebook %}
-    {% include 'notebook/one_page.html.twig' with {'page':page} %}
+    <div>
+     {{ include('user/profil.html.twig',{'userProfil':userProfil, 'fullAccess':fullAccess}) }}
+    </div>
+    <div class="row">
+    {% for category in categories %}
+        <div class="col-4">
+             <div class="card mb-3 mx-auto w-75 h-75 mt-5 border border-primary rounded">
+                <div class="card-header bg-secondary text-dark">
+                    <h5 class="card-title">Carnet de {{ category.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Retrouvez toute vos notes de {{ category.name }}</p>
+                    {#  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
+                </div>
+                 <div class="card-footer d-flex justify-content-end bg-primary">
+                     <a class="btn btn-secondary" href="{{ path('app_user_note_book',{id:category.id}) }}">Acceder</a>
+                 </div>
+             </div>
+        </div>
     {% endfor %}
-       <div class="navigation d-flex justify-content-center">
-           {{ knp_pagination_render(notebook) }}
-       </div>
-    <div class="container d-flex justify-content-center mt-5">
-        <a class="btn btn-primary w-25" href="{{ path('app_notebook_new') }}" role="button">Nouvelle note</a>
     </div>
-
-
 {% endblock %}

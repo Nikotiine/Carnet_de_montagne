@@ -1,0 +1,27 @@
+<form action="{{ path('app_home') }}" method="get" name="select">
+    <h5 class="text-center text-info">Filtrer par :</h5>
+    <div class="d-flex justify-content-evenly">
+    <label>Nombre de sortie par page
+        <select  class="form-select border-info" onchange="submit()" name="cat">
+            {% for nbItems in selectNbItemsPerView %}
+                <option value="{{ nbItems }}" {% if nbPage == nbItems %} selected="selected"{% endif%}>{{ nbItems }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Filtrer par categorie
+        <select  class="form-select border-info" onchange="submit()" name="cat">
+            <option value="0">Choix de la categorie</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if selectedCategory == category.id %} selected="selected"{% endif%}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Filter par date de publication
+        <select  class="form-select border-info" onchange="submit()" name="orderBy">
+            <option value="DESC" {% if selectedOrderBy == "DESC" %} selected="selected"{% endif%}>Les plus recentes</option>
+            <option value="ASC" {% if selectedOrderBy == "ASC" %} selected="selected"{% endif%}>Les plus anciennes</option>
+        </select>
+    </label>
+    </div>
+</form>

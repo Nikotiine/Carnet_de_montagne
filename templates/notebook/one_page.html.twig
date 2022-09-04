@@ -1,14 +1,12 @@
 
 {% block body%}
-<div class="card mb-3 mx-auto w-50 mt-5 border border-primary rounded" >
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="d-flex justify-content-end">
-            <a class="btn btn-danger" href="{{ path('app_notebook_edit_page',{id:page.id}) }}">Modifier</a>
-        </div>
-    {% endif %}
+<div class="card mb-3 mt-5 border border-primary rounded" >
     <div class="row g-0">
         <div class="col-md-4 py-5">
             <ul class="list-group list-group-flush">
+                {% if app.request.pathInfo == "/" %}
+                <li class="list-group-item">Sortie publié par <a class="text-info" href="{{ path('app_user_show',{id:page.author.id}) }}">{{ page.author.firstName }} {{ page.author.lastName }}</a> </li>
+                {% endif %}
                 <li class="list-group-item">Difficulté: {{ page.difficulty.name }}</li>
                 <li class="list-group-item">Meteo: {{ page.conditionMeteot.name }}</li>
                 <li class="list-group-item">Denivele: {{ page.heightDifference }} metres D+</li>
@@ -26,9 +24,20 @@
                 <h6 class="card-subtitle mb-2 text-muted">Course :{{ page.routName }}</h6>
                 <p class="card-text">{{ page.story }}</p>
                 <p class="card-text">{{ page.pointToReview }}</p>
-                <p class="card-text"><small class="text-muted">Fait le  {{ page.achieveAt|date("m/d/Y") }}</small></p>
+                <p class="card-text"><small class="text-muted">Fait le  {{ page.achieveAt|date("d/m/Y") }}</small>
+                     {% if (is_granted('IS_AUTHENTICATED_FULLY')) and (edit == true ) %}
+                    <a class="ms-5 text-primary" href="{{ path('app_notebook_edit_page',{id:page.id}) }}">Modifier</a>
+                    <a class="ms-2 text-danger" href="{{ path('app_notebook_delete_page',{id:page.id}) }}">Effacer</a>
+                     {% endif %}
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+        <div class="d-flex justify-content-end mx-auto w-50">
+
+
+        </div>
+
 {% endblock %}

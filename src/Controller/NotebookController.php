@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\MainCategory;
 use App\Entity\MountainLocation;
 use App\Entity\NotebookPage;
 use App\Entity\User;
@@ -23,13 +24,15 @@ class NotebookController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route("/notebook/new", name: "app_notebook_new")]
+    #[Route("/notebook/new/{id}", name: "app_notebook_new")]
     #[IsGranted("ROLE_USER")]
     public function newPage(
         Request $request,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        MainCategory $category
     ): Response {
         $page = new NotebookPage();
+        $page->setCategory($category);
         $form = $this->createForm(NotebookPageType::class, $page);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,7 +41,9 @@ class NotebookController extends AbstractController
             $manager->persist($page);
             $manager->flush();
             $this->addFlash("success", "Nouvelle note ajoutée");
-            return $this->redirectToRoute("app_dashboard");
+            return $this->redirectToRoute("app_user_note_book", [
+                "id" => $page->getCategory()->getId(),
+            ]);
         }
         return $this->render("notebook/new_page.html.twig", [
             "form" => $form->createView(),
@@ -54,7 +59,7 @@ class NotebookController extends AbstractController
      */
     #[
         Route(
-            "/notebook/new/moutain-location",
+            "/notebook/moutain-location",
             name: "app_notebook_new_mountain_location"
         )
     ]
@@ -79,6 +84,9 @@ class NotebookController extends AbstractController
             "form" => $form->createView(),
         ]);
     }
+    /**
+     * Modification de la note par l'utilisateur proprietaire
+     */
     #[
         Route(
             "/notebook/note/edit/{id}",
@@ -106,6 +114,25 @@ class NotebookController extends AbstractController
         return $this->render("notebook/new_page.html.twig", [
             "form" => $form->createView(),
             "title" => "Edition",
+        ]);
+    }
+    #[
+        Route(
+            "/notebook/note/delete/{id}",
+            name: "app_notebook_delete_page",
+            methods: ["GET"]
+        )
+    ]
+    #[Security("is_granted('ROLE_USER') and user === page.getAuthor()")]
+    public function delete(
+        NotebookPage $page,
+        EntityManagerInterface $manager
+    ): Response {
+        $manager->remove($page);
+        $manager->flush();
+        $this->addFlash("success", "Sortie effacée");
+        return $this->redirectToRoute("app_user_note_book", [
+            "id" => $page->getCategory()->getId(),
         ]);
     }
 }
