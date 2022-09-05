@@ -3,9 +3,12 @@
 {% block title %}Vos sortie{% endblock %}
 
 {% block body %}
+    <div class="container mt-3">
+        <h4 class="text-center">Liste des sorties de : <span class="text-primary">{{ notebookUser.firstName }} {{ notebookUser.lastName }}</span></h4>
+    </div>
     <div class="row m-2">
         {% for page in notebooks %}
-            <div class="col-6">
+            <div class="col-12">
                 {% include 'notebook/one_page.html.twig' with {'page':page} %}
             </div>
         {% endfor %}

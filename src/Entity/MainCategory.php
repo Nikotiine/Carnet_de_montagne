@@ -21,6 +21,9 @@ class MainCategory
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: NotebookPage::class, orphanRemoval: true)]
     private Collection $notebookPages;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $color = null;
+
     public function __construct()
     {
         $this->notebookPages = new ArrayCollection();
@@ -69,6 +72,18 @@ class MainCategory
                 $notebookPage->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

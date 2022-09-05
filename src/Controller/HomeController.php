@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\MainCategoryRepository;
 use App\Repository\NotebookPageRepository;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ class HomeController extends AbstractController
     public function index(
         NotebookPageRepository $repository,
         MainCategoryRepository $categoryRepository,
+        UserRepository $userRepository,
         Request $request,
         PaginatorInterface $paginator
     ): Response {
@@ -23,6 +25,8 @@ class HomeController extends AbstractController
         $nbItemsPerViews = $request->query->getInt("nbPage", 5);
         $selectedCategory = $request->query->getInt("cat", 0);
         $orderBy = $request->query->getAlpha("orderBy", "DESC");
+        $selectedUser = $request->query->getInt("byUser", 0);
+
         $notebook = $paginator->paginate(
             $repository->findByPublicNote($orderBy),
             $currentPagePaginated,
@@ -38,6 +42,24 @@ class HomeController extends AbstractController
                 $nbItemsPerViews
             );
         }
+        if ($selectedUser !== 0 && $selectedCategory !== 0) {
+            $notebook = $paginator->paginate(
+                $repository->findPublicUserNotebookWithCategory(
+                    $selectedUser,
+                    $selectedCategory,
+                    $orderBy
+                ),
+                $currentPagePaginated,
+                $nbItemsPerViews
+            );
+        }
+        if ($selectedUser !== 0 && $selectedCategory == 0) {
+            $notebook = $paginator->paginate(
+                $repository->findPublicUserNotebooks($selectedUser, $orderBy),
+                $currentPagePaginated,
+                $nbItemsPerViews
+            );
+        }
 
         return $this->render("home/index.html.twig", [
             "notebook" => $notebook,
@@ -47,6 +69,8 @@ class HomeController extends AbstractController
             "selectedCategory" => $selectedCategory,
             "selectNbItemsPerView" => [5, 10, 25, 50],
             "selectedOrderBy" => $orderBy,
+            "users" => $userRepository->findAllFirstAndLastName(),
+            "selectedUser" => $selectedUser,
         ]);
     }
 }

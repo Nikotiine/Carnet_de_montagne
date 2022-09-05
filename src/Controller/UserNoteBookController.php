@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\MainCategory;
-use App\Entity\NotebookPage;
 use App\Repository\NotebookPageRepository;
-use Doctrine\ORM\NonUniqueResultException;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,12 +60,47 @@ class UserNoteBookController extends AbstractController
             $request->query->getInt("page", 1),
             2
         );
+        dump($notebooks);
 
         return $this->render(
             "user_note_book/paginated_all_notebooks.html.twig",
             [
                 "notebooks" => $notebooks,
                 "edit" => true,
+                "notebookUser" => $user,
+            ]
+        );
+    }
+    #[
+        Route(
+            "/user/public/notebooks/{id}",
+            name: "app_user_notebook_public",
+            methods: ["GET"]
+        )
+    ]
+    public function showUserNoteBooks(
+        NotebookPageRepository $repository,
+        UserRepository $userRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        $userId = $request->attributes->getInt("id");
+        $noteBookUser = $userRepository->findOneBy([
+            "id" => $userId,
+        ]);
+
+        $notebooks = $paginator->paginate(
+            $repository->findPublicUserNotebooks($userId, "ASC"),
+            $request->query->getInt("page", 1),
+            5
+        );
+
+        return $this->render(
+            "user_note_book/paginated_all_notebooks.html.twig",
+            [
+                "notebooks" => $notebooks,
+                "edit" => false,
+                "notebookUser" => $noteBookUser,
             ]
         );
     }

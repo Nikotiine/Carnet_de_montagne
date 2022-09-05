@@ -12,19 +12,28 @@
 
     <div class="container mt-4 ">
         <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span></h2>
+
+    </div>
+    <div class="row align-items-center">
+        <div class="col-6"> {{ include('user/profil.html.twig',{'userProfil':userProfil, 'fullAccess':fullAccess}) }}</div>
+        <div class="col-6 "> {% include 'components/_charts.html.twig' %}</div>
     </div>
     <div>
-     {{ include('user/profil.html.twig',{'userProfil':userProfil, 'fullAccess':fullAccess}) }}
+
     </div>
+
+
+
+
     <div class="row">
     {% for category in categories %}
         <div class="col-4">
              <div class="card mb-3 mx-auto w-75 h-75 mt-5 border border-primary rounded">
-                <div class="card-header bg-secondary text-dark">
-                    <h5 class="card-title">Carnet de {{ category.name }}</h5>
+                <div class="card-header  text-dark" >
+                    <h5 class="card-title">Carnet de <span style="color: {{ category.color }}">{{ category.name }}</span> </h5>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Retrouvez toute vos notes de {{ category.name }}</p>
+                <div class="card-body" >
+                    <p class="card-text">Retrouver toute mes notes de {{ category.name }}</p>
                     {#  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
                 </div>
                  <div class="card-footer d-flex justify-content-end bg-primary">

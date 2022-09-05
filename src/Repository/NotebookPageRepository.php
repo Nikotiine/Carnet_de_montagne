@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\MainCategory;
 use App\Entity\NotebookPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -84,13 +85,45 @@ class NotebookPageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    //    public function findOneBySomeField($value): ?NotebookPage
-    //    {
-    //        return $this->createQueryBuilder('n')
-    //            ->andWhere('n.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * retourne le notebook public de l'utlisateur filtree par categorie
+     * @param int $selectedUser
+     * @param mixed $selectedCategory
+     * @param string $orderBy
+     * @return array
+     */
+    public function findPublicUserNotebookWithCategory(
+        int $selectedUser,
+        mixed $selectedCategory,
+        string $orderBy
+    ): array {
+        return $this->createQueryBuilder("n")
+            ->andWhere("n.isPublic = 1")
+            ->andWhere("n.category = :cat")
+            ->andWhere("n.author = :user")
+            ->setParameter("user", $selectedUser)
+            ->setParameter("cat", $selectedCategory)
+            ->orderBy("n.achieveAt", $orderBy)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * retourne les notebook public de l'utlisateur
+     * @param mixed $selectedUser
+     * @param string $orderBy
+     * @return array
+     */
+    public function findPublicUserNotebooks(
+        mixed $selectedUser,
+        string $orderBy
+    ): array {
+        return $this->createQueryBuilder("n")
+            ->andWhere("n.isPublic = 1")
+            ->andWhere("n.author = :user")
+            ->setParameter("user", $selectedUser)
+            ->orderBy("n.achieveAt", $orderBy)
+            ->getQuery()
+            ->getResult();
+    }
 }

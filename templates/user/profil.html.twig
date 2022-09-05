@@ -12,7 +12,12 @@
             <div class="card-text">{{ userProfil.email }}</div>
             {% endif %}
             <p class="card-text">Nombre de sortie enregistrée {{ userProfil.notebookPages.count }}</p>
-            <a href="{{ path('app_user_notebook_all') }}" class="btn btn-primary">{{ fullAccess ?  'Voir toutes tes sorties' :  'Voir toutes ses sorties' }}</a>
+            {% if fullAccess == true %}
+                <a href="{{ path('app_user_notebook_all') }}" class="btn btn-primary">Voir toutes mes sorties</a>
+            {% else %}
+                <a href="{{ path('app_user_notebook_public',{id:userProfil.id}) }}" class="btn btn-primary">Voir toutes ses sorties</a>
+            {% endif %}
+
         </div>
         <div class="card-footer text-muted">
             2 days ago

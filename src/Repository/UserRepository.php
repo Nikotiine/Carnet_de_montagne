@@ -17,7 +17,8 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements
+    PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -45,10 +46,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
+    public function upgradePassword(
+        PasswordAuthenticatedUserInterface $user,
+        string $newHashedPassword
+    ): void {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(
+                sprintf(
+                    'Instances of "%s" are not supported.',
+                    \get_class($user)
+                )
+            );
         }
 
         $user->setPassword($newHashedPassword);
@@ -56,28 +64,34 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return User[] Returns an array of User objects with only first and lastname
+     */
+    public function findAllFirstAndLastName(): array
+    {
+        return $this->createQueryBuilder("u")
+            ->addSelect("u.lastName", "u.firstName", "u.id")
+            ->orderBy("u.id", "ASC")
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+    public function findFirstAndLastName(int $userId): array
+    {
+        return $this->createQueryBuilder("u")
+            ->addSelect("u.lastName", "u.firstName")
+            ->andWhere("u.id = :id")
+            ->setParameter("id", $userId)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -9,21 +9,24 @@
         </div>
     {% endfor %}
     <div class="card mb-3 mx-auto w-50 mt-5 border border-primary rounded">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title">Mon carnet de {{ category.name }}</h5>
-            <p><a class="text-primary" href="{{ path('app_notebook_new',{id:category.id}) }}">ajouter</a></p>
+            <p><a class="btn btn-outline-primary" href="{{ path('app_notebook_new',{id:category.id}) }}">ajouter</a></p>
         </div>
         {#<img src="..." class="card-img-top" alt="..."> #}
         <div class="card-body">
             {% if notebook is empty %}
-                <p class="card-text mt-4">Vous n'avez pas encore ouvert de carnet</p>
-            {% endif %}
-
+                <p class="card-text mt-4 text-center text-primary mb-3" >Vous n'avez pas encore ouvert de carnet</p>
+                {% else %}
             <p class="card-text mt-2 text-center">Vous avez {{ notebook.totalItemCount}} sorties enregistrées</p>
-
+            {% endif %}
         </div>
         <div class="card-footer d-flex justify-content-end">
+            {% if notebook is empty %}
+            <p class="card-text"><small class="text-muted">Aucune note ajoutée </small></p>
+            {% else %}
             <p class="card-text"><small class="text-muted">Derniere note ajoutée {{ lastEntry | date("d/m/Y") }}</small></p>
+            {% endif %}
         </div>
     </div>
     <div class="row m-2">
