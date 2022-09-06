@@ -6,6 +6,7 @@ use App\Entity\MainCategory;
 use App\Entity\NotebookPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -125,5 +126,26 @@ class NotebookPageRepository extends ServiceEntityRepository
             ->orderBy("n.achieveAt", $orderBy)
             ->getQuery()
             ->getResult();
+    }
+    public function getStats(mixed $selectedUser): array
+    {
+        return $this->createQueryBuilder("n")
+            ->select("count(n) as data,c.id")
+            ->join("n.category", "c")
+            ->andWhere("n.author = :user")
+            ->setParameter("user", $selectedUser)
+            ->groupBy("n.category")
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getTotalPagesInNotebooks(mixed $selectedUser): int
+    {
+        return $this->createQueryBuilder("n")
+            ->select("count(n) as data")
+            ->andWhere("n.author = :user")
+            ->setParameter("user", $selectedUser)
+            ->getQuery()
+            ->getState();
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Repository\MainCategoryRepository;
-
-use App\Repository\NotebookPageRepository;
 use App\Service\ChartsService;
+use App\Service\UserDashboardService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,25 +14,16 @@ class DashboardController extends AbstractController
     #[Route("/dashboard", name: "app_dashboard")]
     #[IsGranted("ROLE_USER")]
     public function dashboard(
-        MainCategoryRepository $categoryRepository,
-        NotebookPageRepository $notebookPageRepository,
-        ChartsService $chartsService
+        ChartsService $chartsService,
+        UserDashboardService $dashboardService
     ): Response {
         $profil = $this->getUser();
-        $categories = $categoryRepository->findAll();
-        $categoriesLabel = [];
-        $data = [];
-        $colors = [];
         $title = "Statistique personelles";
-        $suggestedMax = $profil->getNotebookPages()->count();
-        foreach ($categories as $category) {
-            $categoriesLabel[] = $category->getName();
-            $colors[] = $category->getColor();
-            $data[] = $notebookPageRepository->count([
-                "author" => $profil,
-                "category" => $category,
-            ]);
-        }
+        $categories = $dashboardService->getAllCategories();
+        $categoriesLabel = $dashboardService->getCategoriesLabels($categories);
+        $colors = $dashboardService->getCategoriesColors($categories);
+        $data = $dashboardService->getStatForCategory($categories, $profil);
+        $suggestedMax = $dashboardService->getSuggestedMax($profil);
         $chart = $chartsService->doughnutChart(
             $title,
             $categoriesLabel,

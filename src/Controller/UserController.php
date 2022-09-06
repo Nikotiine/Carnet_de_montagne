@@ -84,4 +84,15 @@ class UserController extends AbstractController
             "fullAccess" => false,
         ]);
     }
+    #[
+        Route(
+            "/user/settings/{id}",
+            name: "app_user_settings",
+            methods: ["GET", "POST"]
+        )
+    ]
+    #[Security("is_granted('ROLE_USER') and user === currentUser")]
+    public function settings(User $currentUser): Response {
+        return $this->render("user/setting.html.twig");
+    }
 }

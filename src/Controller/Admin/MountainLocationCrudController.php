@@ -26,13 +26,6 @@ class MountainLocationCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new("id")->hideOnForm(),
-            TextField::new("name"),
-            DateTimeField::new("description")->setFormTypeOption(
-                "disabled",
-                "disabled"
-            ),
-        ];
+        return [IdField::new("id")->hideOnForm(), TextField::new("name")];
     }
 }

@@ -39,19 +39,6 @@ class MainCategoryRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return MainCategory[] Returns an array of MainCategory objects
-     */
-    public function getLabels(): array
-    {
-        return $this->createQueryBuilder("m")
-            ->select("m.name")
-            ->orderBy("m.id", "ASC")
-            ->setMaxResults(6)
-            ->getQuery()
-            ->getResult();
-    }
-
     //    public function findOneBySomeField($value): ?MainCategory
     //    {
     //        return $this->createQueryBuilder('m')
