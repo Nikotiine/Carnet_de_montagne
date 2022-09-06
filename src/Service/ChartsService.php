@@ -17,43 +17,69 @@ class ChartsService
         $this->chartBuilder = $chartBuilder;
     }
 
-    public function createBarCharts(
-        array $labels,
-        array $data,
-        array $colors,
-        int $suggestedMax
-    ): Chart {
-        return $this->chartBuilder
-            ->createChart(Chart::TYPE_BAR)
-            ->setData([
-                "labels" => $labels,
-                "datasets" => [
-                    [
-                        "label" => "Sorties realisée",
-                        "backgroundColor" => $colors,
-                        "borderColor" => "#eee",
-                        "data" => $data,
-                    ],
-                ],
-            ])
-            ->setOptions([
-                "scales" => [
-                    "y" => [
-                        "suggestedMin" => 0,
-                        "suggestedMax" => $suggestedMax + 5,
-                    ],
-                ],
-            ]);
-    }
-    public function createDoughnutCharts(
+    public function barChart(
         string $title,
         array $labels,
         array $data,
         array $colors,
         int $suggestedMax
     ): Chart {
-        return $this->chartBuilder
-            ->createChart(Chart::TYPE_DOUGHNUT)
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        return $this->settings(
+            $chart,
+            $title,
+            $labels,
+            $data,
+            $colors,
+            $suggestedMax
+        );
+    }
+
+    public function doughnutChart(
+        string $title,
+        array $labels,
+        array $data,
+        array $colors,
+        int $suggestedMax
+    ): Chart {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+        return $this->settings(
+            $chart,
+            $title,
+            $labels,
+            $data,
+            $colors,
+            $suggestedMax
+        );
+    }
+
+    public function pieChart(
+        string $title,
+        array $labels,
+        array $data,
+        array $colors,
+        int $suggestedMax
+    ): Chart {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+        return $this->settings(
+            $chart,
+            $title,
+            $labels,
+            $data,
+            $colors,
+            $suggestedMax
+        );
+    }
+
+    private function settings(
+        Chart $chart,
+        string $title,
+        array $labels,
+        array $data,
+        array $colors,
+        int $suggestedMax
+    ): Chart {
+        return $chart
             ->setData([
                 "labels" => $labels,
                 "datasets" => [

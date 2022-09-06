@@ -35,7 +35,7 @@ class DashboardController extends AbstractController
                 "category" => $category,
             ]);
         }
-        $chart = $chartsService->createDoughnutCharts(
+        $chart = $chartsService->doughnutChart(
             $title,
             $categoriesLabel,
             $data,
