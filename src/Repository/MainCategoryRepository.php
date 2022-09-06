@@ -39,6 +39,13 @@ class MainCategoryRepository extends ServiceEntityRepository
         }
     }
 
+    public function getColors(): array
+    {
+        return $this->createQueryBuilder("m")
+            ->select("m.color")
+            ->getQuery()
+            ->getResult();
+    }
     //    public function findOneBySomeField($value): ?MainCategory
     //    {
     //        return $this->createQueryBuilder('m')

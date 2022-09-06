@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserSettings;
 use App\Form\UserPasswordType;
+use App\Form\UserSettingsType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -92,7 +94,16 @@ class UserController extends AbstractController
         )
     ]
     #[Security("is_granted('ROLE_USER') and user === currentUser")]
-    public function settings(User $currentUser): Response {
-        return $this->render("user/setting.html.twig");
+    public function settings(User $currentUser, Request $request): Response {
+        $settings = new UserSettings();
+        $form = $this->createForm(UserSettingsType::class, $settings);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $settings = $form->getData();
+            dump($settings);
+        }
+        return $this->render("user/setting.html.twig", [
+            "form" => $form->createView(),
+        ]);
     }
 }

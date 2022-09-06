@@ -3,8 +3,21 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-    <div class="mt-5">
-       toto
-    </div>
+    <div class="container mt-4 w-50">
+        <h1 class="text-center text-primary mt-4">Reglages</h1>
+        {# render the form and change the submission method #}
+        {{ form_start(form) }}
+        <div class="row mt-5">
+            <div class="col-4"> {{ form_label(form.colorCatGrandeVoie) }}{{ form_widget(form.colorCatGrandeVoie) }}</div>
+            <div class="col-4"> {{ form_label(form.colorCatGrandeVoieTrad) }}{{ form_widget(form.colorCatGrandeVoieTrad) }}</div>
+            <div class="col-4"> {{ form_label(form.colorCatAlpiRocheux) }}{{ form_widget(form.colorCatAlpiRocheux) }}</div>
+            <div class="col-4"> {{ form_label(form.colorCatAlpiMixte) }}{{ form_widget(form.colorCatAlpiMixte) }}</div>
+            <div class="col-4"> {{ form_label(form.colorCatRando) }}{{ form_widget(form.colorCatRando) }}</div>
+            <div class="col-4"> {{ form_label(form.colorCatRandoAlpine) }}{{ form_widget(form.colorCatRandoAlpine) }}</div>
+            <div class="col-12 d-flex justify-content-end"><button type="submit" class="btn btn-primary">valider</button></div>
+        </div>
 
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

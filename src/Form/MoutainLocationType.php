@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\MountainLocation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,11 +29,20 @@ class MoutainLocationType extends AbstractType
 
                 "constraints" => [new Assert\NotBlank()],
             ])
+            //            ->add("color", ColorType::class, [
+            //                "attr" => [
+            //                    "class" => "from-control",
+            //                ],
+            //                "html5" => true,
+            //                "data" => "#6f42c1",
+            //                "label" => "Enregister",
+            //                "mapped" => false,
+            //            ])
             ->add("submit", SubmitType::class, [
                 "attr" => [
                     "class" => "btn btn-primary mt-4",
                 ],
-                "label" => "Enregister",
+                "label" => "Enregistrer",
             ]);
     }
 

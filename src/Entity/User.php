@@ -74,6 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: NotebookPage::class, orphanRemoval: true)]
     private Collection $notebookPages;
 
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?UserSettings $userSettings = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -288,6 +291,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $notebookPage->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserSettings(): ?UserSettings
+    {
+        return $this->userSettings;
+    }
+
+    public function setUserSettings(?UserSettings $userSettings): self
+    {
+        $this->userSettings = $userSettings;
 
         return $this;
     }
