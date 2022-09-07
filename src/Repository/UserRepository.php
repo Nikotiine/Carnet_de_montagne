@@ -17,8 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements
-    PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -51,12 +50,7 @@ class UserRepository extends ServiceEntityRepository implements
         string $newHashedPassword
     ): void {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(
-                sprintf(
-                    'Instances of "%s" are not supported.',
-                    \get_class($user)
-                )
-            );
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
         $user->setPassword($newHashedPassword);
@@ -69,9 +63,9 @@ class UserRepository extends ServiceEntityRepository implements
      */
     public function findAllFirstAndLastName(): array
     {
-        return $this->createQueryBuilder("u")
-            ->addSelect("u.lastName", "u.firstName", "u.id")
-            ->orderBy("u.id", "ASC")
+        return $this->createQueryBuilder('u')
+            ->addSelect('u.lastName', 'u.firstName', 'u.id')
+            ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -87,10 +81,10 @@ class UserRepository extends ServiceEntityRepository implements
     //    }
     public function findFirstAndLastName(int $userId): array
     {
-        return $this->createQueryBuilder("u")
-            ->addSelect("u.lastName", "u.firstName")
-            ->andWhere("u.id = :id")
-            ->setParameter("id", $userId)
+        return $this->createQueryBuilder('u')
+            ->addSelect('u.lastName', 'u.firstName')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $userId)
             ->getQuery()
             ->getResult();
     }

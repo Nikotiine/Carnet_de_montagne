@@ -2,33 +2,33 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MainCategory;
+use App\Entity\HomeDisplayedMessage;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class MainCategoryCrudController extends AbstractCrudController
+class HomeDisplayedMessageCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return MainCategory::class;
+        return HomeDisplayedMessage::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural('Types de sorties')
-            ->setEntityLabelInSingular('Type de sortie')
-            ->setPageTitle('index', 'Gestion des types de sorties');
+            ->setEntityLabelInPlural("Messages d acceuil")
+            ->setEntityLabelInSingular("Message d acceuil")
+            ->setPageTitle("index", "Gestion des messages dacceuil");
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
-            TextField::new('name'),
-            TextField::new('color'),
+            IdField::new("id")->hideOnForm(),
+            TextareaField::new("message"),
         ];
     }
 }

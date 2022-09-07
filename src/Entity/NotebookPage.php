@@ -7,9 +7,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
-#[UniqueEntity('title')]
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+#[UniqueEntity("title")]
 #[ORM\Entity(repositoryClass: NotebookPageRepository::class)]
+#[Vich\Uploadable]
 class NotebookPage
 {
     #[ORM\Id]
@@ -54,34 +56,42 @@ class NotebookPage
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $pointToReview = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\ManyToOne(inversedBy: "notebookPages")]
     #[ORM\JoinColumn(nullable: false)]
     private ?Difficulty $difficulty = null;
 
     #[ORM\ManyToOne]
     private ?ConditionMeteo $conditionMeteot = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\ManyToOne(inversedBy: "notebookPages")]
     #[ORM\JoinColumn(nullable: false)]
     private ?MountainLocation $moutainLocation = null;
 
     #[ORM\ManyToOne]
     private ?Felling $feeling = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\ManyToOne(inversedBy: "notebookPages")]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
     #[ORM\Column]
     private ?bool $isPublic = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notebookPages')]
+    #[ORM\ManyToOne(inversedBy: "notebookPages")]
     #[ORM\JoinColumn(nullable: false)]
     private ?MainCategory $category = null;
+    // NOTE: This is not a mapped field of entity metadata, just a simple property.
+    #[
+        Vich\UploadableField(
+            mapping: "notebook_image",
+            fileNameProperty: "imageName"
+        )
+    ]
+    private ?File $imageFile = null;
 
-    /**
-     * @param \DateTimeImmutable|null $createdAt
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    private ?string $imageName = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -282,5 +292,30 @@ class NotebookPage
         $this->category = $category;
 
         return $this;
+    }
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 }

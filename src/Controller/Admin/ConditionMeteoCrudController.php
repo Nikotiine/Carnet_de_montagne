@@ -18,12 +18,13 @@ class ConditionMeteoCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural("Conditions meteo")
-            ->setEntityLabelInSingular("Condition meteo")
-            ->setPageTitle("index", "Gestion des conditions meteo");
+            ->setEntityLabelInPlural('Conditions meteo')
+            ->setEntityLabelInSingular('Condition meteo')
+            ->setPageTitle('index', 'Gestion des conditions meteo');
     }
+
     public function configureFields(string $pageName): iterable
     {
-        return [IdField::new("id")->hideOnForm(), TextField::new("name")];
+        return [IdField::new('id')->hideOnForm(), TextField::new('name')];
     }
 }

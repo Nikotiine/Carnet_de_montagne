@@ -1,16 +1,14 @@
 <div class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <h4 class="text-center mt-3 fw-semibold">Enregister librement vos sorties montagne </h4>
+            <h4 class="text-center mt-3 p-3">Bienvenue sur <span class="text-primary">Carnet de montagne</span></h4>
         </div>
-        <div class="carousel-item">
-            <h4 class="text-center mt-3 fw-semibold"> Retrouvez facilement les sorties partagées par la communauté </h4>
-        </div>
-        <div class="carousel-item">
-            <h4 class="text-center mt-3 fw-semibold"><a class="text-primary" href="{{ path('app_auth') }}">Connectez vous</a>  pour enregistrer toute vos sorties et les partager ou non  </h4>
-        </div>
-        <div class="carousel-item">
-            <h4 class="text-center mt-3 fw-semibold"> Des idées ou sugestion pour ameliorer le site , n'hesitez pas et <a href="{{ path('app_contact') }}" class="text-primary">contactez nous</a> </h4>
-        </div>
+        {% for message in messages %}
+            <div class="carousel-item">
+                {% autoescape false%}
+               {{ message.message}}
+                {% endautoescape %}
+            </div>
+        {% endfor %}
     </div>
 </div>

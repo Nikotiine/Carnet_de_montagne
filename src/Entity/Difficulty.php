@@ -6,8 +6,10 @@ use App\Repository\DifficultyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DifficultyRepository::class)]
+#[UniqueEntity("name")]
 class Difficulty
 {
     #[ORM\Id]
@@ -18,7 +20,7 @@ class Difficulty
     #[ORM\Column(length: 10)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'difficulty', targetEntity: NotebookPage::class)]
+    #[ORM\OneToMany(mappedBy: "difficulty", targetEntity: NotebookPage::class)]
     private Collection $notebookPages;
 
     public function __construct()

@@ -9,15 +9,13 @@ class ChartsService
 {
     private ChartBuilderInterface $chartBuilder;
 
-    /**
-     * @param ChartBuilderInterface $chartBuilder
-     */
     public function __construct(ChartBuilderInterface $chartBuilder)
     {
         $this->chartBuilder = $chartBuilder;
     }
 
     public function barChart(
+        int $typeOfChart,
         string $title,
         array $labels,
         array $data,
@@ -61,6 +59,7 @@ class ChartsService
         int $suggestedMax
     ): Chart {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+
         return $this->settings(
             $chart,
             $title,

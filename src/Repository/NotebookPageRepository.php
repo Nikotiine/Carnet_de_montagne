@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\MainCategory;
 use App\Entity\NotebookPage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,102 +46,92 @@ class NotebookPageRepository extends ServiceEntityRepository
      */
     public function findByPublicNote(string $orderBy): array
     {
-        return $this->createQueryBuilder("n")
-            ->andWhere("n.isPublic = 1")
-            ->orderBy("n.achieveAt", $orderBy)
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.isPublic = 1')
+            ->orderBy('n.achieveAt', $orderBy)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * Retrourne un array de note filtrer par categorie et par ordre de publication
-     * @param int $cat
-     * @param string $orderBy
-     * @return array|null
+     * Retrourne un array de note filtrer par categorie et par ordre de publication.
      */
     public function findPublicWithParameters(int $cat, string $orderBy): ?array
     {
-        return $this->createQueryBuilder("n")
-            ->andWhere("n.isPublic = 1")
-            ->andWhere("n.category = :cat")
-            ->setParameter("cat", $cat)
-            ->orderBy("n.achieveAt", $orderBy)
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.isPublic = 1')
+            ->andWhere('n.category = :cat')
+            ->setParameter('cat', $cat)
+            ->orderBy('n.achieveAt', $orderBy)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * retourne la derniere note creer par l'utilisateur
-     * @return array|null
+     * retourne la derniere note creer par l'utilisateur.
      */
     public function findLastEntry(): ?array
     {
-        return $this->createQueryBuilder("n")
-            ->orderBy("n.createdAt", "DESC")
+        return $this->createQueryBuilder('n')
+            ->orderBy('n.createdAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * retourne le notebook public de l'utlisateur filtree par categorie
-     * @param int $selectedUser
-     * @param mixed $selectedCategory
-     * @param string $orderBy
-     * @return array
+     * retourne le notebook public de l'utlisateur filtree par categorie.
      */
     public function findPublicUserNotebookWithCategory(
         int $selectedUser,
         mixed $selectedCategory,
         string $orderBy
     ): array {
-        return $this->createQueryBuilder("n")
-            ->andWhere("n.isPublic = 1")
-            ->andWhere("n.category = :cat")
-            ->andWhere("n.author = :user")
-            ->setParameter("user", $selectedUser)
-            ->setParameter("cat", $selectedCategory)
-            ->orderBy("n.achieveAt", $orderBy)
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.isPublic = 1')
+            ->andWhere('n.category = :cat')
+            ->andWhere('n.author = :user')
+            ->setParameter('user', $selectedUser)
+            ->setParameter('cat', $selectedCategory)
+            ->orderBy('n.achieveAt', $orderBy)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * retourne les notebook public de l'utlisateur
-     * @param mixed $selectedUser
-     * @param string $orderBy
-     * @return array
+     * retourne les notebook public de l'utlisateur.
      */
     public function findPublicUserNotebooks(
         mixed $selectedUser,
         string $orderBy
     ): array {
-        return $this->createQueryBuilder("n")
-            ->andWhere("n.isPublic = 1")
-            ->andWhere("n.author = :user")
-            ->setParameter("user", $selectedUser)
-            ->orderBy("n.achieveAt", $orderBy)
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.isPublic = 1')
+            ->andWhere('n.author = :user')
+            ->setParameter('user', $selectedUser)
+            ->orderBy('n.achieveAt', $orderBy)
             ->getQuery()
             ->getResult();
     }
+
     public function getStats(mixed $selectedUser): array
     {
-        return $this->createQueryBuilder("n")
-            ->select("count(n) as data,c.id")
-            ->join("n.category", "c")
-            ->andWhere("n.author = :user")
-            ->setParameter("user", $selectedUser)
-            ->groupBy("n.category")
+        return $this->createQueryBuilder('n')
+            ->select('count(n) as data,c.id')
+            ->join('n.category', 'c')
+            ->andWhere('n.author = :user')
+            ->setParameter('user', $selectedUser)
+            ->groupBy('n.category')
             ->getQuery()
             ->getResult();
     }
 
     public function getTotalPagesInNotebooks(mixed $selectedUser): int
     {
-        return $this->createQueryBuilder("n")
-            ->select("count(n) as data")
-            ->andWhere("n.author = :user")
-            ->setParameter("user", $selectedUser)
+        return $this->createQueryBuilder('n')
+            ->select('count(n) as data')
+            ->andWhere('n.author = :user')
+            ->setParameter('user', $selectedUser)
             ->getQuery()
             ->getState();
     }

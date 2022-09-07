@@ -18,16 +18,16 @@ class MoutainLocationType extends AbstractType
         array $options
     ): void {
         $builder
-            ->add("name", TextType::class, [
-                "attr" => [
-                    "class" => "from-control",
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'from-control',
                 ],
-                "label" => "Renseignez le nouveau massif",
-                "label_attr" => [
-                    "class" => "form_label mt-3",
+                'label' => 'Renseignez le nouveau massif',
+                'label_attr' => [
+                    'class' => 'form_label mt-3',
                 ],
 
-                "constraints" => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank()],
             ])
             //            ->add("color", ColorType::class, [
             //                "attr" => [
@@ -38,18 +38,18 @@ class MoutainLocationType extends AbstractType
             //                "label" => "Enregister",
             //                "mapped" => false,
             //            ])
-            ->add("submit", SubmitType::class, [
-                "attr" => [
-                    "class" => "btn btn-primary mt-4",
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary mt-4',
                 ],
-                "label" => "Enregistrer",
+                'label' => 'Enregistrer',
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            "data_class" => MountainLocation::class,
+            'data_class' => MountainLocation::class,
         ]);
     }
 }

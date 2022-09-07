@@ -6,7 +6,9 @@ use App\Repository\UserSettingsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[UniqueEntity("user")]
 #[ORM\Entity(repositoryClass: UserSettingsRepository::class)]
 class UserSettings
 {
@@ -33,12 +35,11 @@ class UserSettings
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $colorCatRandoAlpine = null;
 
-    #[ORM\OneToMany(mappedBy: 'userSettings', targetEntity: User::class)]
-    private Collection $user;
+    #[ORM\OneToOne(inversedBy: "setting", cascade: ["persist", "remove"])]
+    private ?User $user = null;
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,8 +64,9 @@ class UserSettings
         return $this->colorCatGrandeVoieTrad;
     }
 
-    public function setColorCatGrandeVoieTrad(?string $colorCatGrandeVoieTrad): self
-    {
+    public function setColorCatGrandeVoieTrad(
+        ?string $colorCatGrandeVoieTrad
+    ): self {
         $this->colorCatGrandeVoieTrad = $colorCatGrandeVoieTrad;
 
         return $this;
@@ -118,32 +120,14 @@ class UserSettings
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function addUser(User $user): self
+    public function setUser(?User $user): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-            $user->setUserSettings($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getUserSettings() === $this) {
-                $user->setUserSettings(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

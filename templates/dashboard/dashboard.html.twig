@@ -9,7 +9,6 @@
             {{ message }}
         </div>
     {% endfor %}
-
     <div class="container mt-4 ">
         <h2 class="text-center">Bienvenue <span class="text-primary">{{ app.user.firstName }}</span></h2>
 
@@ -18,19 +17,13 @@
         <div class="col-6"> {{ include('user/profil.html.twig',{'userProfil':userProfil, 'fullAccess':fullAccess}) }}</div>
         <div class="col-6 "> {% include 'components/_charts.html.twig' %}</div>
     </div>
-    <div>
-
-    </div>
-
-
-
 
     <div class="row">
     {% for category in categories %}
         <div class="col-4">
              <div class="card mb-3 mx-auto w-75 h-75 mt-5 border border-primary rounded">
                 <div class="card-header  text-dark" >
-                    <h5 class="card-title">Carnet de <span style="color: {{ category.color }}">{{ category.name }}</span> </h5>
+                    <h5 class="card-title">Carnet de <span style="color: {{ colors[category.id-1] }}">{{ category.name }}</span> </h5>
                 </div>
                 <div class="card-body" >
                     <p class="card-text">Retrouver toute mes notes de {{ category.name }}</p>
@@ -43,4 +36,5 @@
         </div>
     {% endfor %}
     </div>
+
 {% endblock %}

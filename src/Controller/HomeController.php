@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\HomeDisplayedMessageRepository;
 use App\Repository\MainCategoryRepository;
 use App\Repository\NotebookPageRepository;
 use App\Repository\UserRepository;
@@ -18,6 +19,7 @@ class HomeController extends AbstractController
         NotebookPageRepository $repository,
         MainCategoryRepository $categoryRepository,
         UserRepository $userRepository,
+        HomeDisplayedMessageRepository $displayedMessageRepository,
         Request $request,
         PaginatorInterface $paginator
     ): Response {
@@ -32,7 +34,7 @@ class HomeController extends AbstractController
             $currentPagePaginated,
             $nbItemsPerViews
         );
-        if ($selectedCategory !== 0) {
+        if (0 !== $selectedCategory) {
             $notebook = $paginator->paginate(
                 $repository->findPublicWithParameters(
                     $selectedCategory,
@@ -42,7 +44,7 @@ class HomeController extends AbstractController
                 $nbItemsPerViews
             );
         }
-        if ($selectedUser !== 0 && $selectedCategory !== 0) {
+        if (0 !== $selectedUser && 0 !== $selectedCategory) {
             $notebook = $paginator->paginate(
                 $repository->findPublicUserNotebookWithCategory(
                     $selectedUser,
@@ -53,7 +55,7 @@ class HomeController extends AbstractController
                 $nbItemsPerViews
             );
         }
-        if ($selectedUser !== 0 && $selectedCategory == 0) {
+        if (0 !== $selectedUser && 0 == $selectedCategory) {
             $notebook = $paginator->paginate(
                 $repository->findPublicUserNotebooks($selectedUser, $orderBy),
                 $currentPagePaginated,
@@ -71,6 +73,7 @@ class HomeController extends AbstractController
             "selectedOrderBy" => $orderBy,
             "users" => $userRepository->findAllFirstAndLastName(),
             "selectedUser" => $selectedUser,
+            "messages" => $displayedMessageRepository->findAll(),
         ]);
     }
 }

@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-#[UniqueEntity("name")]
+
+#[UniqueEntity('name')]
 #[ORM\Entity(repositoryClass: MountainLocationRepository::class)]
 class MountainLocation
 {
@@ -27,7 +28,7 @@ class MountainLocation
 
     #[
         ORM\OneToMany(
-            mappedBy: "moutainLocation",
+            mappedBy: 'moutainLocation',
             targetEntity: NotebookPage::class
         )
     ]

@@ -41,8 +41,8 @@ class MainCategoryRepository extends ServiceEntityRepository
 
     public function getColors(): array
     {
-        return $this->createQueryBuilder("m")
-            ->select("m.color")
+        return $this->createQueryBuilder('m')
+            ->select('m.color')
             ->getQuery()
             ->getResult();
     }

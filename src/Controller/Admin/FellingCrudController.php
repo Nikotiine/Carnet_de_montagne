@@ -14,16 +14,17 @@ class FellingCrudController extends AbstractCrudController
     {
         return Felling::class;
     }
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural("Sentiments")
-            ->setEntityLabelInSingular("Sentiment")
-            ->setPageTitle("index", "Gestion des sentiments");
+            ->setEntityLabelInPlural('Sentiments')
+            ->setEntityLabelInSingular('Sentiment')
+            ->setPageTitle('index', 'Gestion des sentiments');
     }
 
     public function configureFields(string $pageName): iterable
     {
-        return [IdField::new("id")->hideOnForm(), TextField::new("name")];
+        return [IdField::new('id')->hideOnForm(), TextField::new('name')];
     }
 }

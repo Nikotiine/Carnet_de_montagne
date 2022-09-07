@@ -40,9 +40,6 @@ class Contact
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @param \DateTimeImmutable|null $createdAt
-     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();

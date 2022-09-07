@@ -79,6 +79,7 @@ class UserController extends AbstractController
             "form" => $form->createView(),
         ]);
     }
+
     #[Route("/user/show/{id}", name: "app_user_show", methods: ["GET"])]
     public function showUserProfil(User $user): Response {
         return $this->render("user/show_profil.html.twig", [
@@ -86,6 +87,7 @@ class UserController extends AbstractController
             "fullAccess" => false,
         ]);
     }
+
     #[
         Route(
             "/user/settings/{id}",
@@ -94,14 +96,27 @@ class UserController extends AbstractController
         )
     ]
     #[Security("is_granted('ROLE_USER') and user === currentUser")]
-    public function settings(User $currentUser, Request $request): Response {
+    public function settings(
+        User $currentUser,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response {
         $settings = new UserSettings();
+        if ($currentUser->getSetting() !== null) {
+            $settings = $currentUser->getSetting();
+        }
         $form = $this->createForm(UserSettingsType::class, $settings);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $settings = $form->getData();
-            dump($settings);
+            $settings->setUser($currentUser);
+            $manager->persist($settings);
+            $manager->flush();
+            $this->addFlash("success", "setting modifié");
+
+            return $this->redirectToRoute("app_dashboard");
         }
+
         return $this->render("user/setting.html.twig", [
             "form" => $form->createView(),
         ]);

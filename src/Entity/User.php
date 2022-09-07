@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity('email')]
+#[UniqueEntity("email")]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners(["App\EntityListener\UserListener"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -71,11 +71,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plainPassword = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: NotebookPage::class, orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            mappedBy: "author",
+            targetEntity: NotebookPage::class,
+            orphanRemoval: true
+        )
+    ]
     private Collection $notebookPages;
 
-    #[ORM\ManyToOne(inversedBy: 'user')]
-    private ?UserSettings $userSettings = null;
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?UserSettings $setting = null;
 
     public function __construct()
     {
@@ -124,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = "ROLE_USER";
 
         return array_unique($roles);
     }
@@ -295,14 +301,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserSettings(): ?UserSettings
+    public function getSetting(): ?UserSettings
     {
-        return $this->userSettings;
+        return $this->setting;
     }
 
-    public function setUserSettings(?UserSettings $userSettings): self
+    public function setSetting(?UserSettings $setting): self
     {
-        $this->userSettings = $userSettings;
+        // unset the owning side of the relation if necessary
+        if ($setting === null && $this->setting !== null) {
+            $this->setting->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($setting !== null && $setting->getUser() !== $this) {
+            $setting->setUser($this);
+        }
+
+        $this->setting = $setting;
 
         return $this;
     }

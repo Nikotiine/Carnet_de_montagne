@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\FellingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: FellingRepository::class)]
+#[UniqueEntity("name")]
 class Felling
 {
     #[ORM\Id]

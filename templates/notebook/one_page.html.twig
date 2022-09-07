@@ -2,7 +2,7 @@
 {% block body%}
 <div class="card mb-3 mt-5 border border-primary rounded" >
     <div class="row g-0">
-        <div class="col-md-4 py-5">
+        <div class="col-md-3 py-5">
             <ul class="list-group list-group-flush">
                 {% if app.request.pathInfo == "/" %}
                 <li class="list-group-item">Sortie publié par <a class="text-info" href="{{ path('app_user_show',{id:page.author.id}) }}">{{ page.author.firstName }} {{ page.author.lastName }}</a> </li>
@@ -14,7 +14,7 @@
                 <li class="list-group-item">Sentiment: {{ page.feeling.name }}</li>
             </ul>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card-body">
                 <h4 class="card-title mt-3 text-info">{{ page.category.name }}</h4>
                 <blockquote class="blockquote mb-0 mt-4">
@@ -31,6 +31,11 @@
                      {% endif %}
                 </p>
             </div>
+        </div>
+        <div class="col-md-3 d-flex justify-content-end">
+            {% if page.imageName is not empty %}
+            <img src="{{ vich_uploader_asset(page, 'imageFile') }}" width="320" alt="photo de la sortie en montagne">
+            {% endif %}
         </div>
     </div>
 </div>

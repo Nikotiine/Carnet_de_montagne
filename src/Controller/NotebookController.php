@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\MainCategory;
 use App\Entity\MountainLocation;
 use App\Entity\NotebookPage;
-use App\Entity\User;
 use App\Form\MoutainLocationType;
 use App\Form\NotebookPageType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,10 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NotebookController extends AbstractController
 {
     /**
-     * Creation d'une nouvelle note dans le carnet
-     * @param Request $request
-     * @param EntityManagerInterface $manager
-     * @return Response
+     * Creation d'une nouvelle note dans le carnet.
      */
     #[Route("/notebook/new/{id}", name: "app_notebook_new")]
     #[IsGranted("ROLE_USER")]
@@ -41,10 +37,12 @@ class NotebookController extends AbstractController
             $manager->persist($page);
             $manager->flush();
             $this->addFlash("success", "Nouvelle note ajoutée");
+
             return $this->redirectToRoute("app_user_note_book", [
                 "id" => $page->getCategory()->getId(),
             ]);
         }
+
         return $this->render("notebook/new_page.html.twig", [
             "form" => $form->createView(),
             "title" => "Creation",
@@ -52,10 +50,7 @@ class NotebookController extends AbstractController
     }
 
     /**
-     * Permet d'ajouter une nouvelle localisation de massif montagneux
-     * @param Request $request
-     * @param EntityManagerInterface $manager
-     * @return Response
+     * Permet d'ajouter une nouvelle localisation de massif montagneux.
      */
     #[
         Route(
@@ -84,8 +79,9 @@ class NotebookController extends AbstractController
             "form" => $form->createView(),
         ]);
     }
+
     /**
-     * Modification de la note par l'utilisateur proprietaire
+     * Modification de la note par l'utilisateur proprietaire.
      */
     #[
         Route(
@@ -108,6 +104,7 @@ class NotebookController extends AbstractController
             $manager->persist($page);
             $manager->flush();
             $this->addFlash("success", "Note modifiée");
+
             return $this->redirectToRoute("app_dashboard");
         }
 
@@ -116,6 +113,7 @@ class NotebookController extends AbstractController
             "title" => "Edition",
         ]);
     }
+
     #[
         Route(
             "/notebook/note/delete/{id}",
@@ -131,6 +129,7 @@ class NotebookController extends AbstractController
         $manager->remove($page);
         $manager->flush();
         $this->addFlash("success", "Sortie effacée");
+
         return $this->redirectToRoute("app_user_note_book", [
             "id" => $page->getCategory()->getId(),
         ]);

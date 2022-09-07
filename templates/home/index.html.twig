@@ -4,9 +4,9 @@
 
 {% block body %}
     <div class="container">
-    <h1 class="text-center mt-3">Bienvenue sur <span class="text-primary">Carnet de montagne</span></h1>
+
     <div class="container d-flex justify-content-center flex-column mt-5">
-    {% include('home/home_carrousel.html.twig') %}
+ {% include 'home/home_carrousel.html.twig' %}
     </div>
     <div class="mt-5"> {% include('home/home_filter.html.twig')%}</div>
     {% for page in notebook %}

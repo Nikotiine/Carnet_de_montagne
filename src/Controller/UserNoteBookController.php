@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserNoteBookController extends AbstractController
 {
-    #[IsGranted("ROLE_USER")]
-    #[Route("/user/notebook/{id}", name: "app_user_note_book")]
+    #[IsGranted('ROLE_USER')]
+    #[Route('/user/notebook/{id}', name: 'app_user_note_book')]
     public function showByCategory(
         MainCategory $category,
         NotebookPageRepository $repository,
@@ -25,26 +25,28 @@ class UserNoteBookController extends AbstractController
         $user = $this->getUser();
         $notebook = $paginator->paginate(
             $repository->findBy([
-                "author" => $user,
-                "category" => $category,
+                'author' => $user,
+                'category' => $category,
             ]),
-            $request->query->getInt("page", 1),
+            $request->query->getInt('page', 1),
             2
         );
         $lastpage = $repository->findLastEntry();
-        return $this->render("user_note_book/paginated_notebook.html.twig", [
-            "notebook" => $notebook,
-            "category" => $category,
-            "lastEntry" => $lastpage ? $lastpage[0]->getCreatedAt() : "",
-            "edit" => true,
+
+        return $this->render('user_note_book/paginated_notebook.html.twig', [
+            'notebook' => $notebook,
+            'category' => $category,
+            'lastEntry' => $lastpage ? $lastpage[0]->getCreatedAt() : '',
+            'edit' => true,
         ]);
     }
-    #[IsGranted("ROLE_USER")]
+
+    #[IsGranted('ROLE_USER')]
     #[
         Route(
-            "/user/notebook-all",
-            name: "app_user_notebook_all",
-            methods: ["GET"]
+            '/user/notebook-all',
+            name: 'app_user_notebook_all',
+            methods: ['GET']
         )
     ]
     public function showAllNoteBooks(
@@ -55,27 +57,28 @@ class UserNoteBookController extends AbstractController
         $user = $this->getUser();
         $notebooks = $paginator->paginate(
             $repository->findBy([
-                "author" => $user,
+                'author' => $user,
             ]),
-            $request->query->getInt("page", 1),
+            $request->query->getInt('page', 1),
             2
         );
         dump($notebooks);
 
         return $this->render(
-            "user_note_book/paginated_all_notebooks.html.twig",
+            'user_note_book/paginated_all_notebooks.html.twig',
             [
-                "notebooks" => $notebooks,
-                "edit" => true,
-                "notebookUser" => $user,
+                'notebooks' => $notebooks,
+                'edit' => true,
+                'notebookUser' => $user,
             ]
         );
     }
+
     #[
         Route(
-            "/user/public/notebooks/{id}",
-            name: "app_user_notebook_public",
-            methods: ["GET"]
+            '/user/public/notebooks/{id}',
+            name: 'app_user_notebook_public',
+            methods: ['GET']
         )
     ]
     public function showUserNoteBooks(
@@ -84,23 +87,23 @@ class UserNoteBookController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
-        $userId = $request->attributes->getInt("id");
+        $userId = $request->attributes->getInt('id');
         $noteBookUser = $userRepository->findOneBy([
-            "id" => $userId,
+            'id' => $userId,
         ]);
 
         $notebooks = $paginator->paginate(
-            $repository->findPublicUserNotebooks($userId, "ASC"),
-            $request->query->getInt("page", 1),
+            $repository->findPublicUserNotebooks($userId, 'ASC'),
+            $request->query->getInt('page', 1),
             5
         );
 
         return $this->render(
-            "user_note_book/paginated_all_notebooks.html.twig",
+            'user_note_book/paginated_all_notebooks.html.twig',
             [
-                "notebooks" => $notebooks,
-                "edit" => false,
-                "notebookUser" => $noteBookUser,
+                'notebooks' => $notebooks,
+                'edit' => false,
+                'notebookUser' => $noteBookUser,
             ]
         );
     }

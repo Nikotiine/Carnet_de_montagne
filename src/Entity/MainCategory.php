@@ -6,8 +6,10 @@ use App\Repository\MainCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MainCategoryRepository::class)]
+#[UniqueEntity("name")]
 class MainCategory
 {
     #[ORM\Id]
@@ -18,7 +20,13 @@ class MainCategory
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: NotebookPage::class, orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            mappedBy: "category",
+            targetEntity: NotebookPage::class,
+            orphanRemoval: true
+        )
+    ]
     private Collection $notebookPages;
 
     #[ORM\Column(length: 50, nullable: true)]

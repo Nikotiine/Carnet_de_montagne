@@ -18,10 +18,14 @@ class DashboardController extends AbstractController
         UserDashboardService $dashboardService
     ): Response {
         $profil = $this->getUser();
-        $title = "Statistique personelles";
+        $settings = $profil->getSetting();
         $categories = $dashboardService->getAllCategories();
+        $colors = $dashboardService->getSettingsColors($settings);
+        if ($settings == null) {
+            $colors = $dashboardService->getCategoriesColors($categories);
+        }
+        $title = "Statistique personelles";
         $categoriesLabel = $dashboardService->getCategoriesLabels($categories);
-        $colors = $dashboardService->getCategoriesColors($categories);
         $data = $dashboardService->getStatForCategory($categories, $profil);
         $suggestedMax = $dashboardService->getSuggestedMax($profil);
         $chart = $chartsService->doughnutChart(

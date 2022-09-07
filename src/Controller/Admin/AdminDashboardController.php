@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\ConditionMeteo;
 use App\Entity\Difficulty;
 use App\Entity\Felling;
+use App\Entity\HomeDisplayedMessage;
 use App\Entity\MainCategory;
 use App\Entity\MountainLocation;
 use App\Entity\NotebookPage;
@@ -69,6 +70,11 @@ class AdminDashboardController extends AbstractDashboardController
             "Sortie utilisateurs",
             "fa-solid fa-person-hiking",
             NotebookPage::class
+        );
+        yield MenuItem::linkToCrud(
+            "Message d'acceuil",
+            "fa-solid fa-person-hiking",
+            HomeDisplayedMessage::class
         );
     }
 }
