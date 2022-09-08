@@ -16,21 +16,18 @@ class LikeType extends AbstractType
         FormBuilderInterface $builder,
         array $options
     ): void {
-        $builder
-            ->add("isLike", CheckboxType::class, [
-                "attr" => [
-                    "class" => "btn-check",
-                ],
-                "label" => "J aime",
-                "label_attr" => [
-                    "class" => "btn btn-primary",
-                ],
-            ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (
-                FormEvent $event
-            ) {
-                dump($event);
-            });
+        $builder->add("isLike", CheckboxType::class, [
+            "attr" => [
+                "class" => "form-check-input",
+                "role" => "switch",
+                "onClick" => "validate()",
+            ],
+
+            "label" => "J aime",
+            "label_attr" => [
+                "class" => "form-check-label",
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

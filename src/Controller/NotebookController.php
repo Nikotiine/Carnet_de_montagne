@@ -9,6 +9,7 @@ use App\Entity\NotebookPage;
 use App\Form\LikeType;
 use App\Form\MoutainLocationType;
 use App\Form\NotebookPageType;
+use App\Repository\LikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -16,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\Translation\t;
 
 class NotebookController extends AbstractController
 {
@@ -141,19 +143,33 @@ class NotebookController extends AbstractController
         Route(
             "/notebook/detail/note/{id}",
             name: "app_notebook_detail_page",
-            methods: ["GET"]
+            methods: ["GET", "POST"]
         )
     ]
     public function detail(
         NotebookPage $page,
         Request $request,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        LikeRepository $repository
     ): Response {
+        $liked = $repository->findOneBy([
+            "notebookPage" => $page,
+            "user" => $this->getUser(),
+        ]);
+        dump($liked);
         $like = new Like();
+        if ($liked) {
+            $like = $liked;
+        }
         $form = $this->createForm(LikeType::class, $like);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form);
+            $like->setNotebookPage($page);
+            $like->setUser($this->getUser());
+            $like = $form->getData();
+            dump($like);
+            $manager->persist($like);
+            $manager->flush();
         }
 
         return $this->render("notebook/one_page.html.twig", [

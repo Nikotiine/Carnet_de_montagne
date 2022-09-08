@@ -4,15 +4,24 @@
     detail
 {% endblock %}
 
+{% block javascripts%}
+    <script>
+        const checkbox = document.querySelector('input[type=checkbox]')
+        function validate(){
+           document.forms['like'].submit();
 
+        }
+    </script>
+{% endblock %}
 {% block body%}
 <div class="card mb-3 mt-5 border border-primary rounded w-75 mx-auto" >
     <div class="row g-0">
         <div class="col-md-3 py-5">
             <ul class="list-group list-group-flush">
-                {{ form_start(form) }}
-                <li class="list-group-item">{{ form_row(form.isLike) }}</li>
-                {{ form_end(form) }}
+               <li class="mx-auto">
+                   {{ form_start(form,{'attr': {'class': 'form-switch'}}) }}
+                   {{ form_row(form.isLike) }}
+                   {{ form_end(form) }}</li>
                 <li class="list-group-item">Sortie publié par<a class="text-info" href="{{ path('app_user_show',{id:page.author.id}) }}">{{ page.author.firstName }} {{ page.author.lastName }}</a></li>
                 <li class="list-group-item">Difficulté: {{ page.difficulty.name }}</li>
                 <li class="list-group-item">Meteo: {{ page.conditionMeteot.name }}</li>
