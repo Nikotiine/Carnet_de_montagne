@@ -1,0 +1,42 @@
+
+{% block body%}
+
+    <div class="card  border border-primary rounded h-100" >
+        <div class="row g-0 m-2">
+            <div class="col-md-5 py-5">
+                <ul class="list-group list-group-flush">
+                    {% if app.request.pathInfo == "/" %}
+                        <li class="list-group-item">Sortie publié par <a class="text-info" href="{{ path('app_user_show',{id:page.author.id}) }}">{{ page.author.firstName }} {{ page.author.lastName }}</a> </li>
+                    {% endif %}
+                    <li class="list-group-item">Difficulté: {{ page.difficulty.name }}</li>
+
+                    <li class="list-group-item">Denivele: {{ page.heightDifference }} metres D+</li>
+
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h4 class="card-title  text-info">{{ page.category.name }}</h4>
+                    <blockquote class="blockquote mb-0 mt-4">
+                        <footer class="blockquote-footer">Massif montagneux <cite title="{{ page.moutainLocation.name}}">{{ page.moutainLocation.name}} </cite></footer>
+                    </blockquote>
+                    <h5 class="card-title mt-3">Titre :{{ page.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Course :{{ page.routName }}</h6>
+                    <p class="card-text"><small class="text-muted">Fait le  {{ page.achieveAt|date("d/m/Y") }}</small></p>
+                    <p class="card-text">
+                        <small class="text-muted"><a class="text-warning" href="{{ app.user ? path('app_notebook_detail_page',{id:page.id}) : path('app_auth') }}">plus de details</a></small>
+                    {% if not app.user %}<span class="text-danger">*reserve aux membres</span>{% endif %}
+                        {% if (is_granted('IS_AUTHENTICATED_FULLY')) and (edit == true ) %}
+                            <a class="ms-5 text-primary" href="{{ path('app_notebook_edit_page',{id:page.id}) }}">Modifier</a>
+                            <a class="ms-2 text-danger" href="{{ path('app_notebook_delete_page',{id:page.id}) }}">Effacer</a>
+                        {% endif %}
+                    </p>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

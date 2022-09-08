@@ -19,10 +19,12 @@ class DashboardController extends AbstractController
     ): Response {
         $profil = $this->getUser();
         $settings = $profil->getSetting();
+        // dd($settings);
         $categories = $dashboardService->getAllCategories();
-        $colors = $dashboardService->getSettingsColors($settings);
-        if ($settings == null) {
-            $colors = $dashboardService->getCategoriesColors($categories);
+
+        $colors = $dashboardService->getCategoriesColors($categories);
+        if ($settings !== null) {
+            $colors = $dashboardService->getSettingsColors($settings);
         }
         $title = "Statistique personelles";
         $categoriesLabel = $dashboardService->getCategoriesLabels($categories);

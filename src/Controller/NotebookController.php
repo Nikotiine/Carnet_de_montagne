@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Like;
 use App\Entity\MainCategory;
 use App\Entity\MountainLocation;
 use App\Entity\NotebookPage;
+use App\Form\LikeType;
 use App\Form\MoutainLocationType;
 use App\Form\NotebookPageType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -132,6 +134,32 @@ class NotebookController extends AbstractController
 
         return $this->redirectToRoute("app_user_note_book", [
             "id" => $page->getCategory()->getId(),
+        ]);
+    }
+    #[IsGranted("ROLE_USER")]
+    #[
+        Route(
+            "/notebook/detail/note/{id}",
+            name: "app_notebook_detail_page",
+            methods: ["GET"]
+        )
+    ]
+    public function detail(
+        NotebookPage $page,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response {
+        $like = new Like();
+        $form = $this->createForm(LikeType::class, $like);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form);
+        }
+
+        return $this->render("notebook/one_page.html.twig", [
+            "page" => $page,
+            "edit" => false,
+            "form" => $form->createView(),
         ]);
     }
 }

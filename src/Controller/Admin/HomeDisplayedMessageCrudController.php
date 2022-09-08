@@ -19,9 +19,9 @@ class HomeDisplayedMessageCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural("Messages d acceuil")
-            ->setEntityLabelInSingular("Message d acceuil")
-            ->setPageTitle("index", "Gestion des messages dacceuil");
+            ->setEntityLabelInPlural("Messages d accueil")
+            ->setEntityLabelInSingular("Message d accueil")
+            ->setPageTitle("index", "Gestion des messages d accueil");
     }
 
     public function configureFields(string $pageName): iterable

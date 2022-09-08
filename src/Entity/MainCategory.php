@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: MainCategoryRepository::class)]
 #[UniqueEntity("name")]
 class MainCategory
@@ -18,6 +18,7 @@ class MainCategory
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(max: 50)]
     private ?string $name = null;
 
     #[
@@ -30,6 +31,7 @@ class MainCategory
     private Collection $notebookPages;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
     private ?string $color = null;
 
     public function __construct()

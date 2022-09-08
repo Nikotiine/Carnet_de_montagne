@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route("/", name: "app_home", methods: ["GET"])]
+    #[Route("/", name: "app_home", methods: ["GET", "POST"])]
     public function index(
         NotebookPageRepository $repository,
         MainCategoryRepository $categoryRepository,
@@ -28,7 +28,6 @@ class HomeController extends AbstractController
         $selectedCategory = $request->query->getInt("cat", 0);
         $orderBy = $request->query->getAlpha("orderBy", "DESC");
         $selectedUser = $request->query->getInt("byUser", 0);
-
         $notebook = $paginator->paginate(
             $repository->findByPublicNote($orderBy),
             $currentPagePaginated,

@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\FellingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: FellingRepository::class)]
 #[UniqueEntity("name")]
 class Felling
@@ -16,6 +16,7 @@ class Felling
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(max: 50)]
     private ?string $name = null;
 
     public function getId(): ?int
