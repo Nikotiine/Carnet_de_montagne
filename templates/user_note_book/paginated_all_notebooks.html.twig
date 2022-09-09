@@ -8,7 +8,7 @@
     </div>
     <div class="row m-2">
         {% for page in notebooks %}
-            <div class="col-12">
+            <div class="col-12 mt-3 w-75 mx-auto">
                 {% include 'notebook/small_page.html.twig' with {'page':page} %}
             </div>
         {% endfor %}

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\UserSettings;
+use App\Repository\LikeRepository;
 use App\Repository\MainCategoryRepository;
 use App\Repository\NotebookPageRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,8 +12,14 @@ class UserDashboardService
 {
     public function __construct(
         private NotebookPageRepository $notebookPageRepository,
-        private MainCategoryRepository $categoryRepository
+        private MainCategoryRepository $categoryRepository,
+        //private LikeRepository $likeRepository,
+        private LikeService $likeService
     ) {
+    }
+    public function getTotalPagesLiked(UserInterface $user): array
+    {
+        return $this->likeService->getTotalPagesLiked($user);
     }
 
     public function getAllCategories(): array
@@ -49,7 +56,6 @@ class UserDashboardService
         $colors[3] = $settings->getColorCatAlpiMixte();
         $colors[4] = $settings->getColorCatRando();
         $colors[5] = $settings->getColorCatRandoAlpine();
-        dump($colors);
         return $colors;
     }
 

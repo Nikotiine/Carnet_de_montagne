@@ -58,12 +58,12 @@ class AdminDashboardController extends AbstractDashboardController
         );
         yield MenuItem::linkToCrud(
             "Sentiments",
-            "fa-solid fa-cloud-sun",
+            "fa-solid fa-heart-pulse",
             Felling::class
         );
         yield MenuItem::linkToCrud(
             "Difficultes",
-            "fa-solid fa-cloud-sun",
+            "fa-solid fa-sliders",
             Difficulty::class
         );
         yield MenuItem::linkToCrud(
@@ -73,7 +73,7 @@ class AdminDashboardController extends AbstractDashboardController
         );
         yield MenuItem::linkToCrud(
             "Message d'acceuil",
-            "fa-solid fa-person-hiking",
+            "fa-solid fa-comment-dots",
             HomeDisplayedMessage::class
         );
     }

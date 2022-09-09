@@ -1,0 +1,9 @@
+<div class="card  mb-3" style="max-width: 18rem;">
+    <div class="card-header text-center text-primary bold"><h4>Like</h4></div>
+    <div class="card-body">
+        <h5 class="card-title">Nombre de Likes recu : <span class="text-info">{{ likes|length }}</span></h5>
+    </div>
+    <div class="card-footer">
+       <p class="text-info text-center"><a href="{{ path('app_user_like') }}">Voir tous les likes</a></p>
+    </div>
+</div>

@@ -24,7 +24,7 @@ class HomeController extends AbstractController
         PaginatorInterface $paginator
     ): Response {
         $currentPagePaginated = $request->query->getInt("page", 1);
-        $nbItemsPerViews = $request->query->getInt("nbPage", 5);
+        $nbItemsPerViews = $request->query->getInt("nbPage", 10);
         $selectedCategory = $request->query->getInt("cat", 0);
         $orderBy = $request->query->getAlpha("orderBy", "DESC");
         $selectedUser = $request->query->getInt("byUser", 0);
@@ -68,7 +68,7 @@ class HomeController extends AbstractController
             "nbPage" => $notebook->getItemNumberPerPage(),
             "categories" => $categoryRepository->findAll(),
             "selectedCategory" => $selectedCategory,
-            "selectNbItemsPerView" => [5, 10, 25, 50],
+            "selectNbItemsPerView" => [10, 20, 40, 100],
             "selectedOrderBy" => $orderBy,
             "users" => $userRepository->findAllFirstAndLastName(),
             "selectedUser" => $selectedUser,

@@ -19,9 +19,9 @@ class DashboardController extends AbstractController
     ): Response {
         $profil = $this->getUser();
         $settings = $profil->getSetting();
-        // dd($settings);
+        $likes = $dashboardService->getTotalPagesLiked($profil);
+        dump($likes);
         $categories = $dashboardService->getAllCategories();
-
         $colors = $dashboardService->getCategoriesColors($categories);
         if ($settings !== null) {
             $colors = $dashboardService->getSettingsColors($settings);
@@ -44,6 +44,7 @@ class DashboardController extends AbstractController
             "fullAccess" => true,
             "chart" => $chart,
             "colors" => $colors,
+            "likes" => $likes,
         ]);
     }
 }
